@@ -13,6 +13,9 @@ export class Note {
   @Column()
   content: string;
 
+  @Column()
+  category: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

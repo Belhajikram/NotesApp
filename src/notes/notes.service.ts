@@ -1,7 +1,6 @@
-/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { Note } from './entities/note.entity';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
@@ -39,5 +38,22 @@ export class NotesService {
   async remove(id: number): Promise<void> {
     await this.findOne(id);
     await this.notesRepository.delete(id);
+  }
+
+  // Search notes by title or content
+  async searchNotes(query: string): Promise<Note[]> {
+    return await this.notesRepository.find({
+      where: [
+        { title: ILike(`%${query}%`) },
+        { content: ILike(`%${query}%`) },
+      ],
+    });
+  }
+
+  // Filter notes by category
+  async filterNotesByCategory(category: string): Promise<Note[]> {
+    return await this.notesRepository.find({
+      where: { category: ILike(`%${category}%`) },
+    });
   }
 }
