@@ -12,12 +12,12 @@ export class NotesController {
     return this.notesService.create(createNoteDto);
   }
 
-  @Get('search')  // Move this before `@Get(':id')`
+  @Get('search')
   searchNotes(@Query('query') query: string) {
     return this.notesService.searchNotes(query);
   }
 
-  @Get('filter')  // Move this before `@Get(':id')`
+  @Get('filter')
   filterNotesByCategory(@Query('category') category: string) {
     return this.notesService.filterNotesByCategory(category);
   }
