@@ -10,7 +10,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   dotenv.config();
   app.enableCors({
-    origin: 'notesappfront-production.up.railway.app',
+    origin: 'https://notesappfront-production.up.railway.app',
     methods: 'GET,POST,PUT,DELETE,PATCH',
     allowedHeaders: 'Content-Type, Authorization',
   });
