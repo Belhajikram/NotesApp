@@ -1,11 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException  } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { AuthService } from 'src/auth/auth.service';
-import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
@@ -21,7 +19,7 @@ export class UsersService {
     // Check if the email already exists
     const emailExists = await this.mailExists(email);
     if (emailExists) {
-      throw new Error('Email already in use');
+      throw new ConflictException('Email already in use');
     }
 
     const salt = await bcrypt.genSalt();

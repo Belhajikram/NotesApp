@@ -13,9 +13,4 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Get('profile')
-  @UseGuards(AuthGuard('jwt'))
-  async getProfile(@Request() req) {
-    return req.user;
-  }
 }

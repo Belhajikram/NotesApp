@@ -7,7 +7,6 @@ import {
   BeforeInsert,
 } from 'typeorm';
 import { Note } from 'src/notes/entities/note.entity';
-import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -40,6 +39,6 @@ export class User {
   // Override toJSON method to exclude the password
   toJSON() {
     const { password, ...userWithoutPassword } = this;
-    return userWithoutPassword; // Return everything except the password
+    return userWithoutPassword;
   }
 }
