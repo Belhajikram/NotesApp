@@ -16,12 +16,11 @@ import { AuthModule } from './auth/auth.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: configService.get('DATABASE_URL'), // Use DATABASE_URL
-    
+        url: configService.get('DATABASE_URL'),
         autoLoadEntities: true,
         synchronize: true,
         ssl: {
-          rejectUnauthorized: false, // Required for some Railway databases
+          rejectUnauthorized: false,
         },
       }),
     }),
