@@ -35,6 +35,7 @@ export class NotesController {
     return this.notesService.findAll(req.user.userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('search')
   searchNotes(@Request() req, @Query('query') query: string) {
     return this.notesService.searchNotes(req.user.userId, query);

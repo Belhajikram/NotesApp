@@ -59,12 +59,13 @@ export class NotesService {
   async searchNotes(userId: number, query: string): Promise<Note[]> {
     return await this.notesRepository.find({
       where: [
-        { user: { id: userId } },
-        { title: ILike(`%${query}%`) },
-        { content: ILike(`%${query}%`) },
+        { user: { id: userId }, title: ILike(`%${query}%`) },
+        { user: { id: userId }, content: ILike(`%${query}%`) },
       ],
+      relations: ['user'], // Ensure user relation is loaded
     });
   }
+  
 
   async filterNotesByCategory(userId: number, category: string): Promise<Note[]> {
     return await this.notesRepository.find({
