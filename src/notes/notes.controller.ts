@@ -1,34 +1,43 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, BadRequestException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  BadRequestException,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('notes')
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createNoteDto: CreateNoteDto) {
-    return this.notesService.create(createNoteDto);
+  create(@Request() req, @Body() createNoteDto: CreateNoteDto) {
+    if (!req.user || !req.user.userId) {
+      throw new Error("User is not authenticated");
+    }
+    return this.notesService.create(req.user.userId, createNoteDto);
   }
 
-  @Get('search')
-  searchNotes(@Query('query') query: string) {
-    return this.notesService.searchNotes(query);
-  }
-
-  @Get('filter')
-  filterNotesByCategory(@Query('category') category: string) {
-    return this.notesService.filterNotesByCategory(category);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.notesService.findAll();
+  findAll(@Request() req) {
+    return this.notesService.findAll(req.user.userId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) { // Change id type to string
+  findOne(@Param('id') id: string) {
+    // Change id type to string
     const noteId = parseInt(id, 10);
     if (isNaN(noteId)) {
       throw new BadRequestException(`Invalid note ID: ${id}`);
@@ -53,5 +62,15 @@ export class NotesController {
     }
     return this.notesService.remove(noteId);
   }
-}
 
+  @Get('search')
+  searchNotes(@Query('query') query: string) {
+    return this.notesService.searchNotes(query);
+  }
+
+  @Get('filter')
+  filterNotesByCategory(@Query('category') category: string) {
+    return this.notesService.filterNotesByCategory(category);
+  }
+
+}
