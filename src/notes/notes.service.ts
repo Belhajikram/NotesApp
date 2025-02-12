@@ -65,9 +65,14 @@ export class NotesService {
     });
   }
 
-  async filterNotesByCategory(category: string): Promise<Note[]> {
+  async filterNotesByCategory(userId: number, category: string): Promise<Note[]> {
     return await this.notesRepository.find({
-      where: { category: ILike(`%${category}%`) },
+      where: { 
+        user: { id: userId },  // Ensure it filters by the logged-in user
+        category: ILike(`%${category}%`) 
+      },
+      relations: ["user"],  // Ensure user relation is loaded
     });
   }
+  
 }

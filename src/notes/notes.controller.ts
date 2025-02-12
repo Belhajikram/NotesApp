@@ -24,7 +24,7 @@ export class NotesController {
   @Post()
   create(@Request() req, @Body() createNoteDto: CreateNoteDto) {
     if (!req.user || !req.user.userId) {
-      throw new Error("User is not authenticated");
+      throw new Error('User is not authenticated');
     }
     return this.notesService.create(req.user.userId, createNoteDto);
   }
@@ -35,9 +35,19 @@ export class NotesController {
     return this.notesService.findAll(req.user.userId);
   }
 
+  @Get('search')
+  searchNotes(@Query('query') query: string) {
+    return this.notesService.searchNotes(query);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('filter')
+  filterNotesByCategory(@Request() req, @Query('category') category: string) {
+    return this.notesService.filterNotesByCategory(req.user.userId, category);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
-    // Change id type to string
     const noteId = parseInt(id, 10);
     if (isNaN(noteId)) {
       throw new BadRequestException(`Invalid note ID: ${id}`);
@@ -62,15 +72,4 @@ export class NotesController {
     }
     return this.notesService.remove(noteId);
   }
-
-  @Get('search')
-  searchNotes(@Query('query') query: string) {
-    return this.notesService.searchNotes(query);
-  }
-
-  @Get('filter')
-  filterNotesByCategory(@Query('category') category: string) {
-    return this.notesService.filterNotesByCategory(category);
-  }
-
 }
