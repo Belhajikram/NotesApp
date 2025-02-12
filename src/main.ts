@@ -12,7 +12,7 @@ async function bootstrap() {
   dotenv.config();
   app.use(cookieParser());
   app.enableCors({
-    origin: 'http://notesappfront-production.up.railway.app',
+    origin: 'https://notesappfront-production.up.railway.app',
     methods: 'GET,POST,PUT,DELETE,PATCH',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
