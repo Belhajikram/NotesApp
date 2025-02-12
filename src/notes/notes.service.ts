@@ -56,9 +56,10 @@ export class NotesService {
     await this.notesRepository.delete(id);
   }
 
-  async searchNotes(query: string): Promise<Note[]> {
+  async searchNotes(userId: number, query: string): Promise<Note[]> {
     return await this.notesRepository.find({
       where: [
+        { user: { id: userId } },
         { title: ILike(`%${query}%`) },
         { content: ILike(`%${query}%`) },
       ],

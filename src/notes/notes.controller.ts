@@ -36,8 +36,8 @@ export class NotesController {
   }
 
   @Get('search')
-  searchNotes(@Query('query') query: string) {
-    return this.notesService.searchNotes(query);
+  searchNotes(@Request() req, @Query('query') query: string) {
+    return this.notesService.searchNotes(req.user.userId, query);
   }
 
   @UseGuards(JwtAuthGuard)
