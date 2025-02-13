@@ -30,7 +30,7 @@ backend/
 ### 1. Clone the repository
 ```sh
 git clone https://github.com/Belhajikram/NotesApp.git
-cd secure-notes-backend
+cd notes-backend
 ```
 
 ### 2. Install dependencies
