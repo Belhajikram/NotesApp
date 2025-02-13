@@ -67,10 +67,11 @@ npm run start
 
 ### Auth Routes
 - `POST /auth/login` – User login
+- `POST /auth/logout` – User logout
+- `GET /auth/user` – Get authenticated user details (Requires JWT authentication)
 
 ### User Routes
-- `POST /user/signup` – User registration
-- `GET /user/profile` – Retrieve user profile (Requires JWT authentication)
+- `POST /users/register` – User registration
 
 ### Notes Routes
 - `POST /notes/create` – Create a new note
